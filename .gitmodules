@@ -1,0 +1,9 @@
+[submodule "PinkJson"]
+	path = PinkJson
+	url = https://github.com/Vlas-Omsk/PinkJson
+[submodule "websocket-sharp"]
+	path = websocket-sharp
+	url = https://github.com/Vlas-Omsk/websocket-sharp
+[submodule "ProcessArguments"]
+	path = ProcessArguments
+	url = https://github.com/Vlas-Omsk/ProcessArguments
