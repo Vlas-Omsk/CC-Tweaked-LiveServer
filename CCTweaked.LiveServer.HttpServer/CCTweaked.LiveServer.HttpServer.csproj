@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
+    <ProjectReference Include="..\PinkJson\PinkJson2\PinkJson2.csproj" />
+    <ProjectReference Include="..\CCTweaked.LiveServer.Core\CCTweaked.LiveServer.Core.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="$(SolutionDir)lua\*" LinkBase="lua\">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>  
+  </ItemGroup>
+</Project>
