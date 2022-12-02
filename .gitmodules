@@ -1,6 +1,7 @@
 [submodule "PinkJson"]
 	path = PinkJson
 	url = https://github.com/Vlas-Omsk/PinkJson
+    branch = release/PinkJson2
 [submodule "websocket-sharp"]
 	path = websocket-sharp
 	url = https://github.com/Vlas-Omsk/websocket-sharp
