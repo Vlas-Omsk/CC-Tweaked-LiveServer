@@ -5,6 +5,7 @@ namespace CCTweaked.LiveServer.Tests;
 
 public abstract class ApplicationHttpServerTest : IDisposable
 {
+    private const string _luaDirectory = "/mnt/DATA/GitBuh/CCLiveServer/lua";
     private readonly string _endPoint;
     private readonly ApplicationHttpServer _httpServer;
     private readonly HttpClient _httpClient;
@@ -199,7 +200,7 @@ public abstract class ApplicationHttpServerTest : IDisposable
         public async Task Test1()
         {
             var file = "liveclient.lua";
-            var data = File.ReadAllText(Path.Combine("lua", file));
+            var data = File.ReadAllText(Path.Combine(_luaDirectory, file));
 
             var response = await GetAsync(file);
 
@@ -223,7 +224,7 @@ public abstract class ApplicationHttpServerTest : IDisposable
 
         CreateDirectory(_targetPath);
 
-        _httpServer = new ApplicationHttpServer(_endPoint, _rootPath);
+        _httpServer = new ApplicationHttpServer(_endPoint, _rootPath, _luaDirectory);
         _httpServer.Start();
 
         _httpClient = new HttpClient();

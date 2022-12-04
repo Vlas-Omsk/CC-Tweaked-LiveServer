@@ -34,8 +34,10 @@ public sealed class DirectoryWatcher : IDisposable
         Dispose();
     }
 
-    public DirectoryEntry[] GetEntries()
+    public IEnumerable<DirectoryEntry> GetEntries()
     {
+        UpdateAll();
+
         return _entries
             .Select(x => new DirectoryEntry(Path.GetRelativePath(_path, x.Key), x.Key, x.Value.EntryType))
             .ToArray();
@@ -43,8 +45,60 @@ public sealed class DirectoryWatcher : IDisposable
 
     public void ReloadAll()
     {
-        foreach (var entry in EnumerateEntries(_path).Where(x => x.Value == DirectoryEntryType.File))
+        UpdateAll();
+
+        foreach (var entry in _entries.Where(x => x.Value.EntryType == DirectoryEntryType.File))
             RaiseChanged(null, entry.Key, DirectoryChangeType.Changed, DirectoryEntryType.File);
+    }
+
+    public void UpdateAll()
+    {
+        foreach (var actualEntry in EnumerateEntries(_path))
+        {
+            if (_entries.TryGetValue(actualEntry.Key, out var entry))
+            {
+                if (entry.EntryType != actualEntry.Value)
+                {
+                    RaiseChanged(actualEntry.Key, null, DirectoryChangeType.Deleted, entry.EntryType);
+
+                    if (actualEntry.Value == DirectoryEntryType.Directory)
+                    {
+                        entry.EntryType = actualEntry.Value;
+                        entry.Hash = null;
+                    }
+                    else
+                    {
+                        entry.EntryType = actualEntry.Value;
+                        entry.Hash = GetHashForFile(actualEntry.Key);
+                    }
+
+                    RaiseChanged(actualEntry.Key, null, DirectoryChangeType.Created, entry.EntryType);
+                }
+            }
+            else
+            {
+                _entries.Add(actualEntry.Key, entry = new Entry()
+                {
+                    EntryType = actualEntry.Value
+                });
+
+                if (actualEntry.Value == DirectoryEntryType.File)
+                    entry.Hash = GetHashForFile(actualEntry.Key);
+
+                RaiseChanged(actualEntry.Key, null, DirectoryChangeType.Created, actualEntry.Value);
+            }
+        }
+
+        foreach (var entry in _entries)
+        {
+            if ((entry.Value.EntryType == DirectoryEntryType.File && !File.Exists(entry.Key)) ||
+                (entry.Value.EntryType == DirectoryEntryType.Directory && !Directory.Exists(entry.Key)))
+            {
+                _entries.Remove(entry.Key);
+
+                RaiseChanged(entry.Key, null, DirectoryChangeType.Deleted, entry.Value.EntryType);
+            }
+        }
     }
 
     private IEnumerable<KeyValuePair<string, DirectoryEntryType>> EnumerateEntries(string path)

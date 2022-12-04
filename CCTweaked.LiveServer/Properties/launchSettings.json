@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OpenseaBot": {
+      "commandName": "Project",
+      "commandLineArgs": "--url=http://192.168.1.100:1234 --rootDirectory=/home/melon/Desktop/test_live --luaDirectory=/mnt/DATA/GitBuh/CCLiveServer/lua"
+    }
+  }
+}

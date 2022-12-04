@@ -1,9 +1,6 @@
 using System.Buffers;
-using System.Reflection;
 using System.Text;
-using CCTweaked.LiveServer.Core;
 using CCTweaked.LiveServer.Core.IO;
-using CCTweaked.LiveServer.HttpServer.WebSocketServices;
 using WebSocketSharp.Net;
 using WebSocketSharp.Server;
 
@@ -12,13 +9,12 @@ namespace CCTweaked.LiveServer.HttpServer;
 public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
 {
     private readonly string _rootDirectory;
-    private readonly static string _luaDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lua");
+    private readonly string _luaDirectory;
 
-    public ApplicationHttpServer(string url, string rootDirectory) : base(url)
+    public ApplicationHttpServer(string url, string rootDirectory, string luaDirectory) : base(url)
     {
         _rootDirectory = rootDirectory;
-
-        WebSocketServices.AddService<RootWebSocketService>("/", () => new RootWebSocketService(new DirectoryWatcher(rootDirectory)));
+        _luaDirectory = luaDirectory;
     }
 
     protected override void OnRequest(HttpRequestEventArgs e)

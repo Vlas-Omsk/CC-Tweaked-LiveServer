@@ -1,3 +1,4 @@
+using System.Reflection;
 using ProcessArguments;
 
 namespace CCTweaked.LiveServer;
@@ -5,7 +6,8 @@ namespace CCTweaked.LiveServer;
 internal sealed class Config
 {
     [Required]
-    public string WebSocketUrl { get; set; }
+    public string Url { get; set; }
     [Required]
-    public string DirectoryPath { get; set; }
+    public string RootDirectory { get; set; }
+    public string LuaDirectory { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lua");
 }

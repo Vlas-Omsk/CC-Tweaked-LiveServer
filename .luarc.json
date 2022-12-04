@@ -1,0 +1,6 @@
+{
+  "runtime.version": "Lua 5.1",
+  "workspace.library": [
+    "/mnt/DATA/GitBuh/CC-Tweaked-RGB-LuaDoc/CCTweaked.LuaDoc/cc_libs_lua"
+  ]
+}
