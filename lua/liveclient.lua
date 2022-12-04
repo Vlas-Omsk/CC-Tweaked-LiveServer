@@ -4,8 +4,6 @@ local _path
 local _httpEndPoint
 ---@type string
 local _webSocketEndPoint
----@type string
-local _programPath
 ---@type Websocket
 local _ws
 
@@ -212,8 +210,8 @@ function Start()
 end
 
 function Main()
-    _programPath = shell.getRunningProgram()
-    local programDirectory = fs.getDir(_programPath)
+    local programPath = shell.getRunningProgram()
+    local programDirectory = fs.getDir(programPath)
 
     _path = arg[1]
     local host = arg[2]
@@ -230,7 +228,7 @@ function Main()
 
     if arg[3] == nil then
         if shell.openTab ~= nil then
-            local cmd = '/' .. _programPath .. ' ' .. _path .. ' ' .. host .. ' false'
+            local cmd = '/' .. programPath .. ' ' .. _path .. ' ' .. host .. ' false'
             shell.openTab(cmd)
             return
         end
