@@ -5,9 +5,7 @@ namespace CCTweaked.LiveServer;
 
 internal sealed class Config
 {
-    [Required]
-    public string Url { get; set; }
-    [Required]
-    public string RootDirectory { get; set; }
+    public string Url { get; set; } = "http://0.0.0.0:1234";
+    public string RootDirectory { get; set; } = ".";
     public string LuaDirectory { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "lua");
 }
