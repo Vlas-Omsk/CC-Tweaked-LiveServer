@@ -119,15 +119,24 @@ function Download(sourceUrl, destinationPath)
     ---@type BinaryWriteHandle
     ---@diagnostic disable-next-line: assign-type-mismatch
     local fileHandle = fs.open(destinationPath, 'wb')
-    local data
+    local data = responseHandle.readAll()
 
-    repeat
-        data = responseHandle.read(4096)
+    if data == nil then
+        printError("Empty response " .. url)
+        return
+    end
+
+    fileHandle.write(data)
+
+    -- Not work
+    --
+    -- repeat
+    --     data = responseHandle.read(4096)
         
-        if data ~= nil then
-            fileHandle.write(data)
-        end
-    until data ~= nil
+    --     if data ~= nil then
+    --         fileHandle.write(data)
+    --     end
+    -- until data ~= nil
 
     fileHandle.close()
     responseHandle.close()

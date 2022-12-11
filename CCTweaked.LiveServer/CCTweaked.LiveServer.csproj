@@ -4,6 +4,7 @@
     <ProjectReference Include="..\CCTweaked.LiveServer.Core\CCTweaked.LiveServer.Core.csproj" />
     <ProjectReference Include="..\CCTweaked.LiveServer.HttpServer\CCTweaked.LiveServer.HttpServer.csproj" />
     <ProjectReference Include="..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
+    <ProjectReference Include="..\PinkLogging\PinkLogging\PinkLogging.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

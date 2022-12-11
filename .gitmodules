@@ -8,3 +8,6 @@
 [submodule "ProcessArguments"]
 	path = ProcessArguments
 	url = https://github.com/Vlas-Omsk/ProcessArguments
+[submodule "PinkLogging"]
+	path = PinkLogging
+	url = https://github.com/Vlas-Omsk/PinkLogging

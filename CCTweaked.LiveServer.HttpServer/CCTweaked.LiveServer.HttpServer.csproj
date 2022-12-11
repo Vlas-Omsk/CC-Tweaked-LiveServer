@@ -3,6 +3,7 @@
     <ProjectReference Include="..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
     <ProjectReference Include="..\PinkJson\PinkJson2\PinkJson2.csproj" />
     <ProjectReference Include="..\CCTweaked.LiveServer.Core\CCTweaked.LiveServer.Core.csproj" />
+    <ProjectReference Include="..\PinkLogging\PinkLogging\PinkLogging.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,6 +12,6 @@
   <ItemGroup>
     <None Update="$(SolutionDir)lua\*" LinkBase="lua\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>  
+    </None>
   </ItemGroup>
 </Project>

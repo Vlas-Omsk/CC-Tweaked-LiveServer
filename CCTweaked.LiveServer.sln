@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkJson2", "PinkJson\PinkJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTweaked.LiveServer.HttpServer", "CCTweaked.LiveServer.HttpServer\CCTweaked.LiveServer.HttpServer.csproj", "{24057E9C-974B-42CC-AAEE-8D8E1A212556}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkLogging", "PinkLogging\PinkLogging\PinkLogging.csproj", "{B82F453C-680E-4B64-957B-A2CDB597ABB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{24057E9C-974B-42CC-AAEE-8D8E1A212556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24057E9C-974B-42CC-AAEE-8D8E1A212556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24057E9C-974B-42CC-AAEE-8D8E1A212556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82F453C-680E-4B64-957B-A2CDB597ABB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82F453C-680E-4B64-957B-A2CDB597ABB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82F453C-680E-4B64-957B-A2CDB597ABB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82F453C-680E-4B64-957B-A2CDB597ABB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

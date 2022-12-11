@@ -1,6 +1,7 @@
 using System.Buffers;
 using System.Text;
 using CCTweaked.LiveServer.Core.IO;
+using PinkLogging;
 using WebSocketSharp.Net;
 using WebSocketSharp.Server;
 
@@ -10,16 +11,19 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
 {
     private readonly string _rootDirectory;
     private readonly string _luaDirectory;
+    private readonly ILogger _logger;
 
-    public ApplicationHttpServer(string url, string rootDirectory, string luaDirectory) : base(url)
+    public ApplicationHttpServer(string url, string rootDirectory, string luaDirectory, ILogger logger) : base(url)
     {
         _rootDirectory = rootDirectory;
         _luaDirectory = luaDirectory;
+        _logger = logger;
     }
 
     protected override void OnRequest(HttpRequestEventArgs e)
     {
         var path = e.Request.Url.AbsolutePath[1..];
+        var success = false;
 
         if (e.Request.HttpMethod == "GET")
         {
@@ -29,7 +33,7 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
             )
             {
                 SendFile(fullPath, e.Response);
-                return;
+                success = true;
             }
         }
         else if (e.Request.HttpMethod == "PUT")
@@ -38,10 +42,13 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
                 e.Request.InputStream.CopyTo(stream);
 
             e.Response.StatusCode = 200;
-            return;
+            success = true;
         }
 
-        e.Response.StatusCode = 404;
+        if (!success)
+            e.Response.StatusCode = 404;
+
+        _logger.Info($"[{e.Request.HttpMethod}, {e.Request.RemoteEndPoint}] {e.Request.Url.AbsolutePath} ({e.Response.StatusCode})");
     }
 
     private bool TryFindFullPath(string rootPath, string name, out string fullPath)
