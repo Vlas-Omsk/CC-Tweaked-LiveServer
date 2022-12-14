@@ -36,7 +36,7 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
                 success = true;
             }
         }
-        else if (e.Request.HttpMethod == "PUT")
+        else if (e.Request.HttpMethod == "POST")
         {
             using (var stream = File.Open(Path.Combine(_rootDirectory, path), FileMode.Create))
                 e.Request.InputStream.CopyTo(stream);
