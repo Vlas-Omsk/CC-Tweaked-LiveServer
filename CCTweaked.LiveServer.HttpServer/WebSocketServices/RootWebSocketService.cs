@@ -1,8 +1,7 @@
 using CCTweaked.LiveServer.Core;
 using CCTweaked.LiveServer.HttpServer.DTO;
-using CCTweaked.LiveServer.HttpServer.Logging;
+using Microsoft.Extensions.Logging;
 using PinkJson2;
-using PinkLogging;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -11,35 +10,34 @@ namespace CCTweaked.LiveServer.HttpServer.WebSocketServices;
 public sealed class RootWebSocketService : WebSocketBehavior
 {
     private readonly DirectoryWatcher _watcher;
-    private readonly ServiceLogger _logger;
+    private readonly ILogger _logger;
 
-    public RootWebSocketService(DirectoryWatcher watcher, ILogger logger)
+    public RootWebSocketService(DirectoryWatcher watcher, ILogger<RootWebSocketService> logger)
     {
         _watcher = watcher;
-        _logger = new ServiceLogger(nameof(RootWebSocketService), logger);
+        _logger = logger;
     }
 
     protected override void OnStart()
     {
-        _logger.User = Context.UserEndPoint;
         Context.WebSocket.FragmentLength = int.MaxValue;
     }
 
     protected override void OnOpen()
     {
-        _logger.Info($"Opened: {Context.UserEndPoint}");
+        _logger.LogInformation($"Opened: {Context.UserEndPoint}");
 
         _watcher.Changed += OnWatcherChanged;
     }
 
     protected override void OnError(WebSocketSharp.ErrorEventArgs e)
     {
-        _logger.Info($"Error: {Context.UserEndPoint}");
+        _logger.LogInformation($"Error: {Context.UserEndPoint}");
     }
 
     protected override void OnClose(CloseEventArgs e)
     {
-        _logger.Info($"Close: {Context.UserEndPoint}");
+        _logger.LogInformation($"Close: {Context.UserEndPoint}");
 
         _watcher.Changed -= OnWatcherChanged;
     }
@@ -57,11 +55,11 @@ public sealed class RootWebSocketService : WebSocketBehavior
         }
         catch (Exception ex)
         {
-            _logger.Error(ex.ToString());
+            _logger.LogError(ex.ToString());
             return;
         }
 
-        _logger.Info($"Message: {Context.UserEndPoint} {packet.Type} {packet.Data}");
+        _logger.LogInformation($"Message: {Context.UserEndPoint} {packet.Type} {packet.Data}");
 
         switch (packet.Type)
         {

@@ -2,6 +2,7 @@ using CCTweaked.LiveServer.Core;
 using CCTweaked.LiveServer.HttpServer;
 using CCTweaked.LiveServer.HttpServer.DTO;
 using CCTweaked.LiveServer.HttpServer.WebSocketServices;
+using Microsoft.Extensions.Logging.Abstractions;
 using PinkJson2;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -41,7 +42,13 @@ public abstract class RootWebSocketServiceTest : IDisposable
         Directory.CreateDirectory(_directory);
         _watcher = new DirectoryWatcher(_rootDirectory);
         _webSocketServer = new WebSocketServer(url);
-        _webSocketServer.WebSocketServices.AddService<RootWebSocketService>("/", () => new RootWebSocketService(_watcher));
+        _webSocketServer.WebSocketServices.AddService(
+            "/",
+            () => new RootWebSocketService(
+                _watcher,
+                NullLogger<RootWebSocketService>.Instance
+            )
+        );
         _webSocketServer.Start();
         _webSocket = new WebSocket(url);
         _webSocket.Message += OnWebSocketMessage;

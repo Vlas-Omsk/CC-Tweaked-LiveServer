@@ -1,7 +1,7 @@
 ﻿using CCTweaked.LiveServer.Core;
 using CCTweaked.LiveServer.HttpServer;
 using CCTweaked.LiveServer.HttpServer.WebSocketServices;
-using PinkLogging;
+using Microsoft.Extensions.Logging;
 using ProcessArguments;
 
 namespace CCTweaked.LiveServer;
@@ -15,12 +15,27 @@ internal static class Program
 
     private static void Start(Config config)
     {
-        using var logger = new ConsoleLogger();
+        using var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder
+                .AddConsole();
+        });
 
-        var httpServer = new ApplicationHttpServer(config.Url, config.RootDirectory, config.LuaDirectory, logger);
+        var httpServer = new ApplicationHttpServer(
+            config.Url,
+            config.RootDirectory,
+            config.LuaDirectory,
+            loggerFactory.CreateLogger<ApplicationHttpServer>()
+        );
         var watcher = new DirectoryWatcher(config.RootDirectory);
 
-        httpServer.WebSocketServices.AddService<RootWebSocketService>("/", () => new RootWebSocketService(watcher, logger));
+        httpServer.WebSocketServices.AddService(
+            "/",
+            () => new RootWebSocketService(
+                watcher,
+                loggerFactory.CreateLogger<RootWebSocketService>()
+            )
+        );
         httpServer.Start();
 
         while (true)

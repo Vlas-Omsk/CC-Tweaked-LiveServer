@@ -1,11 +1,12 @@
 using System.Net;
 using CCTweaked.LiveServer.HttpServer;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CCTweaked.LiveServer.Tests;
 
 public abstract class ApplicationHttpServerTest : IDisposable
 {
-    private const string _luaDirectory = "/mnt/DATA/GitBuh/CCLiveServer/lua";
+    private const string _luaDirectory = "lua";
     private readonly string _endPoint;
     private readonly ApplicationHttpServer _httpServer;
     private readonly HttpClient _httpClient;
@@ -224,7 +225,12 @@ public abstract class ApplicationHttpServerTest : IDisposable
 
         CreateDirectory(_targetPath);
 
-        _httpServer = new ApplicationHttpServer(_endPoint, _rootPath, _luaDirectory);
+        _httpServer = new ApplicationHttpServer(
+            _endPoint,
+            _rootPath,
+            _luaDirectory,
+            NullLogger<ApplicationHttpServer>.Instance
+        );
         _httpServer.Start();
 
         _httpClient = new HttpClient();

@@ -1,7 +1,7 @@
 using System.Buffers;
 using System.Text;
 using CCTweaked.LiveServer.Core.IO;
-using PinkLogging;
+using Microsoft.Extensions.Logging;
 using WebSocketSharp.Net;
 using WebSocketSharp.Server;
 
@@ -13,7 +13,12 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
     private readonly string _luaDirectory;
     private readonly ILogger _logger;
 
-    public ApplicationHttpServer(string url, string rootDirectory, string luaDirectory, ILogger logger) : base(url)
+    public ApplicationHttpServer(
+        string url,
+        string rootDirectory,
+        string luaDirectory,
+        ILogger<ApplicationHttpServer> logger
+    ) : base(url)
     {
         _rootDirectory = rootDirectory;
         _luaDirectory = luaDirectory;
@@ -48,7 +53,7 @@ public sealed class ApplicationHttpServer : WebSocketSharp.Server.HttpServer
         if (!success)
             e.Response.StatusCode = 404;
 
-        _logger.Info($"[{e.Request.HttpMethod}, {e.Request.RemoteEndPoint}] {e.Request.Url.AbsolutePath} ({e.Response.StatusCode})");
+        _logger.LogInformation($"[{e.Request.HttpMethod}, {e.Request.RemoteEndPoint}] {e.Request.Url.AbsolutePath} ({e.Response.StatusCode})");
     }
 
     private bool TryFindFullPath(string rootPath, string name, out string fullPath)
